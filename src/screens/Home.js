@@ -5,41 +5,55 @@ import Card from "../components/Card";
 import Carousel from "../components/Carousal";
 
 export default function Home() {
-  const [foodCat, setFoodCat] = useState([]);
-  const [foodItem, setFoodItem] = useState([]);
-
-  const loadData = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/foodData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      const responseData = await response.json();
-      setFoodItem(responseData[0]);
-      setFoodCat(responseData[1]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/foodData", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        const responseData = await response.json();
+        setCategories(responseData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
       <Navbar />
       <Carousel />
       <div className="container">
-        {foodCat.length !== 0 &&
-          foodCat.map((data, index) => (
-            <div key={index}>Hello World</div>
-          ))}
-        <Card />
+        {categories.map((category) => (
+          <div key={category._id}>
+            <h2>{category.CategoryName}</h2>
+            <div className="card-container">
+              {category.options.map((item) => (
+                <Card
+                  key={item._id}
+                  name={item.name}
+                  img={item.img}
+                  description={item.description}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
       <Footer />
     </div>
