@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, link } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
     <div>
@@ -21,11 +22,14 @@ export default function Navbar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">
-              <Link className="nav-link active" aria-current="page" to="/">
+              <Link className="nav-link " aria-current="page" to="/">
                 Home
               </Link>
               <Link className="nav-link" to="/login">
-                login
+                Login
+              </Link>
+              <Link className="nav-link" to="/createuser">
+                Signup
               </Link>
             </div>
           </div>
