@@ -19,7 +19,7 @@ export default function Home() {
         });
   
         const responseData = await response.json();
-        setCategories(responseData);
+        sortData(responseData); // Sort data before setting state
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -29,6 +29,16 @@ export default function Home() {
 
     fetchData();
   }, []);
+
+  const sortData = (data) => {
+    // Sort categories based on custom order
+    const customOrder = ["Pizza", "Starter", "Biryani/Rice"];
+    const sortedCategories = customOrder.map(category => ({
+      [category]: data.filter(item => item.CategoryName === category)
+    })).filter(category => category[Object.keys(category)[0]].length > 0);
+
+    setCategories(sortedCategories);
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -40,16 +50,16 @@ export default function Home() {
       <Carousel />
       <div className="container">
         {categories.map((category) => (
-          <div key={category._id}>
-            <h2>{category.CategoryName}</h2>
-            <div className="card-container">
-              {category.options.map((item) => (
-                <Card
-                  key={item._id}
-                  name={item.name}
-                  img={item.img}
-                  description={item.description}
-                />
+          <div key={Object.keys(category)[0]} className="mb-3">
+            <h2>{Object.keys(category)[0]}</h2>
+            <div className="row card-container">
+              {Object.values(category)[0].map((item) => (
+                <div key={item._id} className="col-12 col-md-6 col-lg-3">
+                  <Card
+                    foodName={item.name}
+                    options={item.options}
+                  />
+                </div>
               ))}
             </div>
           </div>
