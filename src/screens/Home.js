@@ -41,21 +41,28 @@ export default function Home() {
 
     setCategories(sortedCategories);
   };
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value); // Update search query state
   };
+
   if (loading) {
     return <div>Loading...</div>;
   }
-  const filteredCategories = categories.map((category) => ({
-    [Object.keys(category)[0]]: Object.values(category)[0].filter((item) =>
+
+  // Filter categories based on search query
+  const filteredCategories = categories.map((category) => {
+    const categoryName = Object.keys(category)[0];
+    const filteredItems = Object.values(category)[0].filter((item) =>
       item.options.some(
         (option) =>
           option.regular &&
           option.regular.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    ),
-  }));
+    );
+    return { [categoryName]: filteredItems };
+  });
+
   return (
     <div>
       <Navbar />
@@ -86,6 +93,8 @@ export default function Home() {
                     placeholder="Search for burgers..."
                     aria-label="Search"
                     style={{ border: "1px solid white", color: "white" }}
+                    value={searchQuery}
+                    onChange={handleSearch} // Added onChange event handler
                   />
                   <button
                     className="btn btn-success"
@@ -115,6 +124,8 @@ export default function Home() {
                     placeholder="Search for pastries..."
                     aria-label="Search"
                     style={{ border: "1px solid white", color: "white" }}
+                    value={searchQuery}
+                    onChange={handleSearch}
                   />
                   <button
                     className="btn btn-success"
@@ -144,6 +155,8 @@ export default function Home() {
                     placeholder="Search for barbeque..."
                     aria-label="Search"
                     style={{ border: "1px solid white", color: "white" }}
+                    value={searchQuery}
+                    onChange={handleSearch}
                   />
                   <button
                     className="btn btn-success"
@@ -185,6 +198,23 @@ export default function Home() {
         </div>
       </div>
       <div className="container">
+        {categories.map((category) => (
+          <div key={Object.keys(category)[0]} className="mb-3">
+            <h2>{Object.keys(category)[0]}</h2>
+            <div className="row card-container">
+              {Object.values(category)[0].map((item) => (
+                <div key={item._id} className="col-12 col-md-6 col-lg-3">
+                  <Card
+                    foodName={item.name} // Update this line to use item.name
+                    options={item.options}
+                    img={item.img}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
         {categories.map((category) => (
           <div key={Object.keys(category)[0]} className="mb-3">
             <h2>{Object.keys(category)[0]}</h2>
