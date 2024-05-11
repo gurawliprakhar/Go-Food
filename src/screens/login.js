@@ -39,7 +39,7 @@ export default function Login() {
         localStorage.setItem('authtoken', json.token);
         setIsLoggedIn(true);
         // Navigate to the dashboard or home page
-        navigate('/dashboard'); // Replace '/dashboard' with the appropriate route
+        navigate('/'); // Replace '/dashboard' with the appropriate route
       } else {
         // If login fails, show an error message
         alert("Invalid credentials. Please try again.");
@@ -93,7 +93,7 @@ export default function Login() {
         </button>
       </form>
       <p className="mt-3">
-        Don't have an account? <Link to="/signup">Sign Up</Link>
+        Don't have an account? <Link to="/Signup">Sign Up</Link>
       </p>
     </div>
   );
