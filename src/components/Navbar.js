@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Badge from "react-bootstrap/Badge";
+import Modal from "../Modal";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const [cartView, setCartView] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -32,36 +35,35 @@ export default function Navbar() {
               <Link className="nav-link active fs-5" aria-current="page" to="/">
                 Home
               </Link>
-            </div>
-            {localStorage.getItem("authToken") && (
-              <li className="nav-items">
-                <Link
-                  className="nav-link active fs-5"
-                  aria-current="page"
-                  to="/"
-                >
+              {localStorage.getItem("authToken") && (
+                <Link className="nav-link active fs-5" aria-current="page" to="/MyOrder">
                   My Orders
                 </Link>
-              </li>
-            )}
-
-            {localStorage.getItem("authToken") ? (
-              <div className="d-flex">
-                <Link className="btn bg-white text-success mx-1" to="/login">
-                  Login
-                </Link>
-                <Link className="btn bg-white text-success mx-1" to="/signup">
-                  Signup
-                </Link>
-              </div>
-            ) : (
-              <div>
-                <div className="btn bg-white text-success mx-2">My Cart</div>
-                <div className="btn bg-white text-danger mx-2" onClick={handleLogout}>
-                  Logout
+              )}
+            </div>
+            <div>
+              {localStorage.getItem("authToken") ? (
+                <div className="d-flex">
+                  <div className="btn bg-white text-success mx-2" onClick={() => setCartView(true)}>
+                    My Cart{""}
+                    <Badge bg="danger">2</Badge>
+                  </div>
+                  {cartView && <Modal onClose={() => setCartView(false)} />}
+                  <div className="btn bg-white text-danger mx-2" onClick={handleLogout}>
+                    Logout
+                  </div>
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="d-flex">
+                  <Link className="btn bg-white text-success mx-2" to="/login">
+                    Login
+                  </Link>
+                  <Link className="btn bg-white text-success mx-2" to="/signup">
+                    Signup
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>

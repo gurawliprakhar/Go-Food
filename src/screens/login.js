@@ -33,17 +33,17 @@ export default function Login() {
       });
 
       if (response.ok) {
-        // If login successful, get the token from the response
         const json = await response.json();
-        // Store the token in localStorage
-        localStorage.setItem('authtoken', json.token);
+        const { userEmail, authtoken } = json; // Extract userEmail and authtoken from JSON response
+        // Store userEmail and authtoken in localStorage
+        localStorage.setItem('userEmail', userEmail);
+        localStorage.setItem('authtoken', authtoken);
         setIsLoggedIn(true);
-        // Navigate to the dashboard or home page
-        navigate('/'); // Replace '/dashboard' with the appropriate route
+        navigate('/'); // Navigate to the dashboard or home page
       } else {
-        // If login fails, show an error message
         alert("Invalid credentials. Please try again.");
       }
+      
     } catch (error) {
       console.error("Error submitting form:", error);
       // Show an error message

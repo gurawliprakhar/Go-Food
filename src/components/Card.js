@@ -8,12 +8,12 @@ function Card({ foodName, img, options }) {
   const [price, setPrice] = useState(0); // State to store the fetched price
 
   useEffect(() => {
-    // Fetch the price from the backend
     const fetchPrice = async () => {
       try {
-        // Make an API call to fetch the price
-        const response = await fetch("http://example.com/price"); // Replace 'http://example.com/price' with your actual endpoint
+        // Fetch price from backend API
+        const response = await fetch("http://localhost:5000/api/foodData");
         const data = await response.json();
+        // For demonstration, assuming the price is directly available in the data
         setPrice(data.price); // Set the fetched price in state
       } catch (error) {
         console.error("Error fetching price:", error);
